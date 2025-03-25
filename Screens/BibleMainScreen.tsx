@@ -17,7 +17,7 @@ import {
   convertFullNameToAbbreviation,
 } from '../Type/BibleBooks';
 import BibleGridItem from '../Component/BibleGridItem';
-import BibleListItem from '../Component/BibleListItem';
+import BibleListItem from '../Component/ListItem';
 import searchImage from '../assets/images/search.png';
 import x_mark from '../assets/images/x_mark.png';
 

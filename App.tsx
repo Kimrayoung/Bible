@@ -8,6 +8,8 @@ import {SafeAreaProvider} from 'react-native-safe-area-context';
 import Sample from './Screens/Sample';
 import FontAwesome5 from '@react-native-vector-icons/fontawesome5';
 import BibleStack from './Component/BibleStack';
+import TopicMainScreen from './Screens/TopicMainScreen';
+import TopicStack from './Component/TopicStack';
 
 const Tab = createBottomTabNavigator();
 
@@ -60,6 +62,23 @@ const TabNavigator = () => {
             return (
               <FontAwesome5
                 name="bible"
+                iconStyle="solid"
+                size={16}
+                color={'black'}
+              />
+            );
+          },
+        }}
+      />
+      <Tab.Screen
+        name="Topic"
+        component={TopicStack}
+        options={{
+          title: '주제별 말씀',
+          tabBarIcon: ({}) => {
+            return (
+              <FontAwesome5
+                name="folder-open"
                 iconStyle="solid"
                 size={16}
                 color={'black'}

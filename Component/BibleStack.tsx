@@ -5,12 +5,6 @@ import BibleMainScreen from '../Screens/BibleMainScreen';
 import NavigationBackButton from './NavigationBackButton';
 import {BibleStackParamList} from '../Type/BibleNavigationTypes';
 import ChapterSelectScreen from '../Screens/ChapterSelectScreen';
-import {
-  getFocusedRouteNameFromRoute,
-  useNavigationState,
-} from '@react-navigation/native';
-import {TouchableOpacity, View} from 'react-native';
-import FontAwesome5 from '@react-native-vector-icons/fontawesome5';
 import BibleLeftRightButtons from './BibleLeftRightButtons';
 
 const Stack = createNativeStackNavigator<BibleStackParamList>();
@@ -21,7 +15,12 @@ const BibleStack = () => {
       <Stack.Screen
         name="BibleMainScreen"
         component={BibleMainScreen}
-        options={{headerShown: true, title: '성경', headerTitleAlign: 'center'}}
+        options={{
+          headerShown: true,
+          title: '성경',
+          headerTitleAlign: 'center',
+          headerTitleStyle: {fontFamily: 'BMJUA_otf', fontSize: 20},
+        }}
       />
       <Stack.Screen
         name="ChapterSelect"
@@ -31,6 +30,7 @@ const BibleStack = () => {
           title: route.params.bookFullName,
 
           headerTitleAlign: 'center',
+          headerTitleStyle: {fontFamily: 'BMJUA_otf', fontSize: 20},
           headerLeft: () => (
             <NavigationBackButton
               onPressHandle={() => navigation.goBack()}
@@ -47,6 +47,7 @@ const BibleStack = () => {
           headerShown: true,
           title: `제${route.params.chapterName}장`,
           headerTitleAlign: 'center',
+          headerTitleStyle: {fontFamily: 'BMJUA_otf', fontSize: 20},
           // NavigationBackButton 컴포넌트를 사용하여 뒤로가기 기능 구현
           headerLeft: () => (
             <NavigationBackButton

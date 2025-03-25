@@ -22,7 +22,11 @@ const NavigationBackButton: React.FC<NavigationBackButtonProps> = ({
       ) : (
         <></>
       )}
-      {navigationText ? <Text>{navigationText}</Text> : <></>}
+      {navigationText ? (
+        <Text style={styles.textStyle}>{navigationText}</Text>
+      ) : (
+        <></>
+      )}
     </TouchableOpacity>
   );
 };
@@ -31,6 +35,11 @@ const styles = StyleSheet.create({
   navigationContainerStyle: {
     flexDirection: 'row',
     width: 60,
+  },
+  textStyle: {
+    fontFamily: 'BMJUA_otf',
+    fontSize: 20,
+    marginLeft: 3,
   },
 });
 
