@@ -1,0 +1,41 @@
+{
+  "migIndex": 1,
+  "data": [
+    {
+      "path": "assets/fonts/BMJUA_otf.otf",
+      "sha1": "9a0647721e800b813ffaa2e921c468a30337114b"
+    },
+    {
+      "path": "assets/fonts/NanumGothic.otf",
+      "sha1": "5ddc85276725a76b3ccaca02349b04b044523c1b"
+    },
+    {
+      "path": "assets/fonts/NanumGothic.ttf",
+      "sha1": "6b61cdb4fe859e3932437d6d816c1944daeff1b2"
+    },
+    {
+      "path": "assets/fonts/NanumGothicBold.otf",
+      "sha1": "b6338ab704adf3cfba0f9dee12872cfe8bc1f915"
+    },
+    {
+      "path": "assets/fonts/NanumGothicBold.ttf",
+      "sha1": "f892d26a11d118ca76a00901390f611c34bbf62d"
+    },
+    {
+      "path": "assets/fonts/NanumGothicExtraBold.otf",
+      "sha1": "e5497a770d59e3257a45ae79d87447ccb37f7557"
+    },
+    {
+      "path": "assets/fonts/NanumGothicExtraBold.ttf",
+      "sha1": "974116089db0e8c0e19b62a6a280908cbe3fafba"
+    },
+    {
+      "path": "assets/fonts/NanumGothicLight.otf",
+      "sha1": "afb760386f293285f679f9f93086037fc5e09dcc"
+    },
+    {
+      "path": "assets/fonts/NanumGothicLight.ttf",
+      "sha1": "451faa2221d1613e646a95bc646cce556a7f1758"
+    }
+  ]
+}

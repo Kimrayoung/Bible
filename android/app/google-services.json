@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "591963048673",
+    "project_id": "bible-fbcd2",
+    "storage_bucket": "bible-fbcd2.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:591963048673:android:28742f039a7a34260505a0",
+        "android_client_info": {
+          "package_name": "com.bible"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCucubGGRE1RKOetIeGW8A5iyD3E_BWv8A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
