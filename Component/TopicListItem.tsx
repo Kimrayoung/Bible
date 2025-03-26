@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
   },
   topicText: {
     fontFamily: 'BMJUA_otf',
-    fontSize: 26,
+    fontSize: 23.5,
   },
 });
 

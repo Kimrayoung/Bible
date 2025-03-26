@@ -3,7 +3,7 @@ import {RouteProp} from '@react-navigation/native';
 
 export type TopicStackParamList = {
   TopicMainScreen: undefined;
-  TopicResult: {
+  TopicContentListView: {
     topic: string;
   };
   Bible: {
@@ -17,5 +17,8 @@ export type TopicStackParamList = {
 export type TopicStackNativationProp =
   NativeStackNavigationProp<TopicStackParamList>;
 
-export type TopicResultProp = RouteProp<TopicStackParamList, 'TopicResult'>;
+export type TopicResultProp = RouteProp<
+  TopicStackParamList,
+  'TopicContentListView'
+>;
 export type Bible = RouteProp<TopicStackParamList, 'Bible'>;

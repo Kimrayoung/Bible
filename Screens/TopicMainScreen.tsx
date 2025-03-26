@@ -23,6 +23,7 @@ import {
   getFirestore,
 } from '@react-native-firebase/firestore';
 import EmptyView from '../Component/EmptyView';
+import {TopicStackNativationProp} from '../Type/TopicNavigationTypes';
 
 const TopicMainScreen = () => {
   const [inputSearchData, setInputSearchData] = useState<string>('');
@@ -30,10 +31,12 @@ const TopicMainScreen = () => {
   const [topicList, setTopicList] = useState<string[]>();
   const [searchResult, setSearchResult] = useState<string[]>();
   const [isLoading, setIsLoading] = useState<Boolean>(false);
-  const navigation = useNavigation();
+  const navigation = useNavigation<TopicStackNativationProp>();
 
-  const toTopicResult = (book: string) => {
-    console.log(book);
+  const toTopicResult = (topic: string) => {
+    navigation.navigate('TopicContentListView', {
+      topic: topic,
+    });
   };
 
   const fetchTopics = async () => {
@@ -91,7 +94,11 @@ const TopicMainScreen = () => {
   );
 
   const listItem = ({item, index}: {item: string; index: number}) => (
-    <TopicListItem item={item} index={index} onPressHandler={toTopicResult} />
+    <TopicListItem
+      item={item}
+      index={index}
+      onPressHandler={() => toTopicResult(item)}
+    />
   );
 
   if (isLoading) {

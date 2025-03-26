@@ -10,5 +10,10 @@ export interface TopicListProps {
 
 export interface TopicProps {
   topicName: string;
-  verses: [말씀내용: string, 성경위치: string];
+  verses: {content: string; location: string}[];
+}
+
+export interface TopicComponentProps {
+  location: string;
+  content: string;
 }
