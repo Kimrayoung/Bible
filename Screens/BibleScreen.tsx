@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {
   View,
   Text,
@@ -7,9 +7,10 @@ import {
   ScrollView,
   TouchableOpacity,
   Image,
+  FlatList,
 } from 'react-native';
 import {RouteProp, useRoute} from '@react-navigation/native';
-import {BibleScreenRouteProp} from '../Type/BibleNavigationTypes';
+import {BibleStackParamList} from '../Type/BibleNavigationTypes';
 import {getApp} from '@react-native-firebase/app';
 import {
   getFirestore,
@@ -18,13 +19,22 @@ import {
   getDoc,
 } from '@react-native-firebase/firestore';
 import {ChapterData, VerseDate} from '../Type/BibleTypes';
+import {FromScreen} from '../Type/NavigationCommonTypes';
+import {TopicStackParamList} from '../Type/TopicNavigationTypes';
+
+type BibleScreenRoutePropUnion =
+  | RouteProp<BibleStackParamList, 'Bible'>
+  | RouteProp<TopicStackParamList, 'Bible'>;
 
 const Bible = () => {
-  const route = useRoute<BibleScreenRouteProp>();
-  const {bookName, chapterName, chapterCount} = route.params || {};
+  const route = useRoute<BibleScreenRoutePropUnion>();
+  const {bookName, chapterName, chapterCount, verse, fromScreen} =
+    route.params || {};
   const [verses, setVerses] = useState<VerseDate[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [isLayoutReady, setIsLayoutReady] = useState(false);
+  const flatListRef = useRef(null);
 
   useEffect(() => {
     const fetchBibleVerses = async () => {
@@ -72,7 +82,6 @@ const Bible = () => {
 
         setVerses(selectedVerses);
         setLoading(false);
-        console.log('here');
       } catch (err) {
         console.error('성경 구절 가져오기 오류:', err);
         setError('성경 구절을 가져오는 중 오류가 발생했습니다.');
@@ -82,6 +91,45 @@ const Bible = () => {
 
     fetchBibleVerses();
   }, [chapterName]);
+
+  useEffect(() => {
+    if (
+      isLayoutReady &&
+      fromScreen !== FromScreen.chapterScreen &&
+      !loading &&
+      verse &&
+      flatListRef.current
+    ) {
+      // 해당 절(verse)의 인덱스 찾기
+      const verseIndex = verses.findIndex(item => item.verse === verse);
+      console.log('verseIndex', verseIndex);
+      if (verseIndex !== -1) {
+        // 약간의 지연 후 스크롤 실행 (데이터 렌더링 후 스크롤이 작동하도록)
+        setTimeout(() => {
+          flatListRef.current.scrollToIndex({
+            index: verseIndex,
+            animated: true,
+            viewOffset: 50, // 상단에서 약간 여백을 두고 위치하도록
+          });
+        }, 500);
+      }
+    }
+  }, [isLayoutReady]);
+
+  const renderVerse = ({item}: {item: VerseDate}) => {
+    const isHighlighted = item.verse === verse;
+
+    return (
+      <View
+        style={[
+          styles.verseContainer,
+          isHighlighted && styles.highlightedVerse,
+        ]}>
+        <Text style={styles.verseNumber}>{item.verse}</Text>
+        <Text style={styles.verseText}>{item.text}</Text>
+      </View>
+    );
+  };
 
   if (loading) {
     return (
@@ -102,20 +150,14 @@ const Bible = () => {
 
   return (
     <View style={styles.container}>
-      <ScrollView>
-        {verses.length > 0 ? (
-          verses.map(item => (
-            <View
-              key={`${item.book}${item.chapter}:${item.verse}`}
-              style={styles.verseContainer}>
-              <Text style={styles.verseNumber}>{item.verse}</Text>
-              <Text style={styles.verseText}>{item.text}</Text>
-            </View>
-          ))
-        ) : (
-          <Text>해당 범위의 구절이 없습니다.</Text>
-        )}
-      </ScrollView>
+      <FlatList
+        ref={flatListRef}
+        onLayout={() => setIsLayoutReady(true)}
+        data={verses}
+        keyExtractor={item => `${item.verse}`}
+        renderItem={renderVerse}
+        // onScrollToIndexFailed={handleScrollToIndexFailed}
+      />
     </View>
   );
 };
@@ -144,6 +186,9 @@ const styles = StyleSheet.create({
   errorText: {
     color: 'red',
     fontSize: 16,
+  },
+  highlightedVerse: {
+    backgroundColor: 'rgba(255, 255, 0, 0.3)',
   },
 });
 

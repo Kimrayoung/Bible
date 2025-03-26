@@ -436,6 +436,14 @@ export const bibleTestaments = {
   },
 };
 
+export interface ParsedBibleVerse {
+  book: BibleBookAbbreviation; // 책 약어 (예: '창')
+  bookFullName: BibleBookFullName;
+  chapter: string; // 장 (예: 5)
+  verse: string; // 절 (예: 14)
+  original: string; // 원본 문자열 (예: '창세기 5:14')
+}
+
 export function convertFullNameToAbbreviation(bookName: string): string {
   // 전체 이름이 매핑에 있는지 확인
   if (bookName in fullNameToAbbrev) {
@@ -444,4 +452,38 @@ export function convertFullNameToAbbreviation(bookName: string): string {
 
   // 매핑에 없는 경우 원래 이름 반환
   return bookName;
+}
+
+export function parseBibleVerse(location: string): ParsedBibleVerse | null {
+  try {
+    // 정규표현식을 이용하여 성경 구절 파싱
+    // 형식: [책이름] [장]:[절] 또는 [책이름] [장].[절]
+    const regex = /^(.+?)\s+(\d+)[:\.](\d+)$/;
+    const match = location.match(regex);
+
+    if (!match) {
+      console.error(`올바른 성경 구절 형식이 아닙니다: ${location}`);
+      return null;
+    }
+
+    // 매치된 그룹 추출
+    const [_, bookName, chapter, verse] = match;
+    const bookFullName = bookName as BibleBookFullName;
+
+    // 책 이름이 전체 이름인 경우 약어로 변환
+    const book = convertFullNameToAbbreviation(
+      bookFullName,
+    ) as BibleBookAbbreviation;
+
+    return {
+      book,
+      bookFullName,
+      chapter,
+      verse,
+      original: location,
+    };
+  } catch (error) {
+    console.error(`성경 구절 파싱 중 오류 발생: ${error}`);
+    return null;
+  }
 }

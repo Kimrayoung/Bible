@@ -1,5 +1,6 @@
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {RouteProp} from '@react-navigation/native';
+import {BibleScreenParams} from './NavigationCommonTypes';
 
 // 스택 파라미터 타입 정의
 // 네비게이션 스택에 있는 각 화면과 그 화면으로 이동할 때 필요한 파라미터 정의
@@ -9,12 +10,7 @@ export type BibleStackParamList = {
     bookName: string;
     bookFullName: string;
   };
-  Bible: {
-    bookName: string;
-    chapterName: string;
-    bookFullName: string;
-    chapterCount: string;
-  };
+  Bible: BibleScreenParams;
 };
 
 // 네비게이션 Props 타입(즉, 전체 네비게이션에 전달할 내용)

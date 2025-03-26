@@ -1,3 +1,5 @@
+import {ParsedBibleVerse} from './BibleBooks';
+
 export interface TopicListItemProps {
   item: string;
   index: number;
@@ -16,4 +18,5 @@ export interface TopicProps {
 export interface TopicComponentProps {
   location: string;
   content: string;
+  onPressHandler: (location: string) => void;
 }

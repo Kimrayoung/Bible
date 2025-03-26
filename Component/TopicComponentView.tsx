@@ -1,12 +1,19 @@
 import React from 'react';
-import {Platform, StyleSheet, Text, View} from 'react-native';
+import {Platform, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {TopicComponentProps} from '../Type/TopicTypes';
+import {parseBibleVerse} from '../Type/BibleBooks';
 
-const TopicComponentView = ({location, content}: TopicComponentProps) => {
+const TopicComponentView = ({
+  location,
+  content,
+  onPressHandler,
+}: TopicComponentProps) => {
   return (
     <View style={styles.containter}>
-      <Text style={styles.contentText}>{content}</Text>
-      <Text style={styles.locationText}>{location}</Text>
+      <TouchableOpacity onPress={() => onPressHandler(location)}>
+        <Text style={styles.contentText}>{content}</Text>
+        <Text style={styles.locationText}>{location}</Text>
+      </TouchableOpacity>
     </View>
   );
 };

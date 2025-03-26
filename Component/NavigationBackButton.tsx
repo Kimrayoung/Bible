@@ -34,11 +34,12 @@ const NavigationBackButton: React.FC<NavigationBackButtonProps> = ({
 const styles = StyleSheet.create({
   navigationContainerStyle: {
     flexDirection: 'row',
-    width: 60,
+    width: 100,
+    paddingLeft: 10,
   },
   textStyle: {
     fontFamily: 'BMJUA_otf',
-    fontSize: 20,
+    fontSize: 17,
     marginLeft: 3,
   },
 });
