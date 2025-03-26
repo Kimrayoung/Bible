@@ -40,16 +40,9 @@ const ChapterSelectScreen = () => {
       bookName: bookName,
       chapterName: chapter,
       bookFullName: bookFullName,
-      chapterCount: chapterCount,
+      chapterCount: String(chapterCount),
     });
   };
-
-  useLayoutEffect(() => {
-    navigation.setOptions({
-      tabBarStyle: {display: 'none'},
-      tabBarVisible: false, // 이전 버전 호환성을 위해
-    });
-  }, [navigation]);
 
   // useEffect(() => {
   //   const fetchChapters = async () => {

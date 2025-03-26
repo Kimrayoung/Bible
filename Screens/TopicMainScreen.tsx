@@ -1,4 +1,4 @@
-import React, {useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {
   Image,
   Text,
@@ -10,8 +10,17 @@ import {
 } from 'react-native';
 import searchImage from '../assets/images/search.png';
 import x_mark from '../assets/images/x_mark.png';
-import BibleListItem from '../Component/ListItem';
 import {useNavigation} from '@react-navigation/native';
+import TopicListItem from '../Component/TopicListItem';
+import {TopicListProps} from '../Type/TopicTypes';
+import {getApp} from '@react-native-firebase/app';
+import {
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  getFirestore,
+} from '@react-native-firebase/firestore';
 
 const TopicMainScreen = () => {
   const [inputSearchData, setInputSearchData] = useState<string>('');
@@ -19,11 +28,38 @@ const TopicMainScreen = () => {
   const [searchTopicResult, setSearchTopicResult] = useState<string[] | null>(
     null,
   );
+  const [topicList, setTopicList] = useState<string[]>();
+
   const navigation = useNavigation();
 
   const toTopicResult = (book: string) => {
     console.log(book);
   };
+
+  const fetchTopics = async () => {
+    try {
+      const app = getApp();
+      const db = getFirestore(app);
+
+      const topicCollection = collection(db, 'Topics');
+      const topicDocs = await getDocs(topicCollection);
+
+      if (topicDocs.empty) {
+        console.log('해당 책을 찾을 수 없습니다');
+      }
+      const tempDocsId: string[] = [];
+      topicDocs.forEach(doc => {
+        tempDocsId.push(doc.id);
+      });
+      setTopicList(tempDocsId);
+    } catch (error) {
+      console.log('주제 가져오기 오류: ', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchTopics();
+  }, []);
 
   const SearchBtn = () => (
     <TouchableOpacity>
@@ -36,11 +72,11 @@ const TopicMainScreen = () => {
   );
 
   const listItem = ({item, index}: {item: string; index: number}) => (
-    <BibleListItem item={item} index={index} onPressHandler={toTopicResult} />
+    <TopicListItem item={item} index={index} onPressHandler={toTopicResult} />
   );
 
   return (
-    <View>
+    <View style={styles.container}>
       <View style={styles.inputContainerStyle}>
         <View style={styles.inputWrapper}>
           <TextInput
@@ -68,7 +104,7 @@ const TopicMainScreen = () => {
         <SearchBtn />
       </View>
       <FlatList
-        data={['1', '2', '3', '4']}
+        data={topicList}
         renderItem={listItem}
         keyExtractor={(item, index) => index.toString()}
       />
@@ -77,6 +113,10 @@ const TopicMainScreen = () => {
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: 'white',
+  },
   inputContainerStyle: {
     marginLeft: 12,
     marginRight: 13,

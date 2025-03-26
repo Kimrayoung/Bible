@@ -2,7 +2,7 @@ import React from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {BibleListItemProps} from '../Type/BibleTypes';
 
-const ListItem = ({item, index, onPressHandler}: BibleListItemProps) => {
+const BibleListItem = ({item, index, onPressHandler}: BibleListItemProps) => {
   return (
     <View style={styles.listContainer}>
       <TouchableOpacity key={index} onPress={() => onPressHandler(item)}>
@@ -26,4 +26,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ListItem;
+export default BibleListItem;

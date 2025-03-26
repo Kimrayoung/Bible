@@ -13,7 +13,7 @@ const TopicStack = () => {
         component={TopicMainScreen}
         options={{
           headerShown: true,
-          title: '오늘의 주제',
+          title: '주제별 말씀',
           headerTitleAlign: 'center',
           headerTitleStyle: {fontFamily: 'BMJUA_otf', fontSize: 20},
         }}
