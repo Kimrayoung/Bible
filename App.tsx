@@ -64,7 +64,7 @@ const TabNavigator = () => {
                 name="bible"
                 iconStyle="solid"
                 size={16}
-                color={'black'}
+                color={focused ? '#4973A4' : 'a0a0a0'}
               />
             );
           },
@@ -75,13 +75,13 @@ const TabNavigator = () => {
         component={TopicStack}
         options={{
           title: '주제별 말씀',
-          tabBarIcon: ({}) => {
+          tabBarIcon: ({focused}) => {
             return (
               <FontAwesome5
                 name="folder-open"
                 iconStyle="solid"
                 size={16}
-                color={'black'}
+                color={focused ? '#4973A4' : 'a0a0a0'}
               />
             );
           },
@@ -96,7 +96,7 @@ const TabNavigator = () => {
               <FontAwesome5
                 name="user-alt"
                 iconStyle="solid"
-                color={focused ? '#1263ce' : 'a0a0a0'}
+                color={focused ? '#4973A4' : 'a0a0a0'}
                 size={16}
               />
             );
