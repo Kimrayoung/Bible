@@ -7,8 +7,8 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import Sample from './Screens/Sample';
 import FontAwesome5 from '@react-native-vector-icons/fontawesome5';
+import Ionicons from '@react-native-vector-icons/ionicons';
 import BibleStack from './Component/BibleStack';
-import TopicMainScreen from './Screens/TopicMainScreen';
 import TopicStack from './Component/TopicStack';
 
 const Tab = createBottomTabNavigator();
@@ -88,14 +88,13 @@ const TabNavigator = () => {
         }}
       />
       <Tab.Screen
-        name="Sample"
+        name="설정"
         component={Sample}
         options={{
           tabBarIcon: ({focused}) => {
             return (
-              <FontAwesome5
-                name="user-alt"
-                iconStyle="solid"
+              <Ionicons
+                name="settings"
                 color={focused ? '#4973A4' : 'a0a0a0'}
                 size={16}
               />
