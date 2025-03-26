@@ -104,8 +104,8 @@ const TopicMainScreen = () => {
   if (isLoading) {
     return (
       <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color="#0000ff" />
-        <Text style={styles.loadingErrorText}>성경 구절을 불러오는 중...</Text>
+        <ActivityIndicator size="large" color="#4973A4" />
+        <Text style={styles.loadingErrorText}>주제 목록 불러오는 중...</Text>
       </View>
     );
   }
