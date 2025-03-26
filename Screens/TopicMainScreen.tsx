@@ -7,6 +7,7 @@ import {
   StyleSheet,
   TextInput,
   FlatList,
+  ActivityIndicator,
 } from 'react-native';
 import searchImage from '../assets/images/search.png';
 import x_mark from '../assets/images/x_mark.png';
@@ -21,15 +22,14 @@ import {
   getDocs,
   getFirestore,
 } from '@react-native-firebase/firestore';
+import EmptyView from '../Component/EmptyView';
 
 const TopicMainScreen = () => {
   const [inputSearchData, setInputSearchData] = useState<string>('');
   const inputRef = useRef<TextInput>(null);
-  const [searchTopicResult, setSearchTopicResult] = useState<string[] | null>(
-    null,
-  );
   const [topicList, setTopicList] = useState<string[]>();
-
+  const [searchResult, setSearchResult] = useState<string[]>();
+  const [isLoading, setIsLoading] = useState<Boolean>(false);
   const navigation = useNavigation();
 
   const toTopicResult = (book: string) => {
@@ -37,6 +37,7 @@ const TopicMainScreen = () => {
   };
 
   const fetchTopics = async () => {
+    setIsLoading(true);
     try {
       const app = getApp();
       const db = getFirestore(app);
@@ -46,20 +47,38 @@ const TopicMainScreen = () => {
 
       if (topicDocs.empty) {
         console.log('해당 책을 찾을 수 없습니다');
+        setIsLoading(false);
+        return;
       }
       const tempDocsId: string[] = [];
       topicDocs.forEach(doc => {
         tempDocsId.push(doc.id);
       });
       setTopicList(tempDocsId);
+      setIsLoading(false);
     } catch (error) {
       console.log('주제 가져오기 오류: ', error);
     }
   };
 
+  const searchTopics = () => {
+    if (!inputSearchData) {
+      fetchTopics();
+      return;
+    }
+    const filterResult =
+      topicList?.filter(topic => topic.includes(inputSearchData)) ?? [];
+    console.log('filterResult: ', filterResult, inputSearchData);
+    setSearchResult(filterResult);
+  };
+
   useEffect(() => {
     fetchTopics();
   }, []);
+
+  useEffect(() => {
+    searchTopics();
+  }, [inputSearchData]);
 
   const SearchBtn = () => (
     <TouchableOpacity>
@@ -74,6 +93,15 @@ const TopicMainScreen = () => {
   const listItem = ({item, index}: {item: string; index: number}) => (
     <TopicListItem item={item} index={index} onPressHandler={toTopicResult} />
   );
+
+  if (isLoading) {
+    return (
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" color="#0000ff" />
+        <Text style={styles.loadingErrorText}>성경 구절을 불러오는 중...</Text>
+      </View>
+    );
+  }
 
   return (
     <View style={styles.container}>
@@ -104,9 +132,11 @@ const TopicMainScreen = () => {
         <SearchBtn />
       </View>
       <FlatList
-        data={topicList}
+        data={inputSearchData ? searchResult : topicList}
         renderItem={listItem}
         keyExtractor={(item, index) => index.toString()}
+        ListEmptyComponent={EmptyView('주제')}
+        contentContainerStyle={{flex: 1}}
       />
     </View>
   );
@@ -116,6 +146,16 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'white',
+  },
+  loadingContainer: {
+    flex: 1,
+    minHeight: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  loadingErrorText: {
+    fontFamily: 'BMJUA_otf',
+    fontSize: 26,
   },
   inputContainerStyle: {
     marginLeft: 12,

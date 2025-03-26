@@ -11,7 +11,7 @@ const TopicListItem = ({item, index, onPressHandler}: TopicListItemProps) => {
         onPress={() => onPressHandler(item)}
         style={styles.buttonStyle}>
         <Text style={styles.topicText}>{item}</Text>
-        <FontAwesome5 name="angle-right" iconStyle="solid" size={20} />
+        <FontAwesome5 name="angle-right" iconStyle="solid" size={25} />
       </TouchableOpacity>
     </View>
   );
