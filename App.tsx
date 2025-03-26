@@ -41,7 +41,7 @@ const TabNavigator = () => {
   };
 
   const currentRouteName = getNestedRouteName(navigationState);
-  const hideTabBarScreens = ['Bible', 'ChapterSelect']; // 여기에 탭 바를 숨기고 싶은 화면 이름을 추가하세요.
+  const hideTabBarScreens = ['Bible', 'ChapterSelect', 'TopicContentListView']; // 여기에 탭 바를 숨기고 싶은 화면 이름을 추가하세요.
 
   return (
     <Tab.Navigator
@@ -54,7 +54,7 @@ const TabNavigator = () => {
         },
       }}>
       <Tab.Screen
-        name="Bible"
+        name="BibleMain"
         component={BibleStack}
         options={{
           title: '성경',
@@ -71,7 +71,7 @@ const TabNavigator = () => {
         }}
       />
       <Tab.Screen
-        name="Topic"
+        name="TopicMain"
         component={TopicStack}
         options={{
           title: '주제별 말씀',
