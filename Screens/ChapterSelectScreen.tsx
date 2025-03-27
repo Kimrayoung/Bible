@@ -47,38 +47,38 @@ const ChapterSelectScreen = () => {
     });
   };
 
-  useEffect(() => {
-    const fetchChapters = async () => {
-      try {
-        console.log('here');
-        // Firebase 앱 인스턴스 가져오기
-        const app = getApp();
-        // Firestore 인스턴스 가져오기
-        const db = getFirestore(app);
+  const fetchChapters = async () => {
+    try {
+      console.log('here');
+      // Firebase 앱 인스턴스 가져오기
+      const app = getApp();
+      // Firestore 인스턴스 가져오기
+      const db = getFirestore(app);
 
-        // 문서 참조 생성
-        const bibleCollection = collection(db, 'Bible');
-        const bookDocRef = doc(bibleCollection, bookName);
-        const bookDoc = await getDoc(bookDocRef);
+      // 문서 참조 생성
+      const bibleCollection = collection(db, 'Bible');
+      const bookDocRef = doc(bibleCollection, bookName);
+      const bookDoc = await getDoc(bookDocRef);
 
-        if (!bookDoc.exists) {
-          console.log('cant find');
-          setError('해당 책을 찾을 수 없습니다');
-          setLoading(false);
-          return;
-        }
-        console.log('second');
-        const data = bookDoc.data();
-        setChapterCount(data.chapterCount);
+      if (!bookDoc.exists) {
+        console.log('cant find');
+        setError('해당 책을 찾을 수 없습니다');
         setLoading(false);
-        console.log(chapterCount);
-      } catch (error) {
-        console.log('책 정보 가져오기 오류: ', error);
-        setError('책 정보를 가져오는 중 오류가 발생함');
-        setLoading(false);
+        return;
       }
-    };
+      console.log('second');
+      const data = bookDoc.data();
+      setChapterCount(data.chapterCount);
+      setLoading(false);
+      console.log(chapterCount);
+    } catch (error) {
+      console.log('책 정보 가져오기 오류: ', error);
+      setError('책 정보를 가져오는 중 오류가 발생함');
+      setLoading(false);
+    }
+  };
 
+  useEffect(() => {
     fetchChapters();
   }, []);
 
