@@ -10,17 +10,24 @@ import FontAwesome5 from '@react-native-vector-icons/fontawesome5';
 import Ionicons from '@react-native-vector-icons/ionicons';
 import BibleStack from './Component/BibleStack';
 import TopicStack from './Component/TopicStack';
+import {GestureHandlerRootView} from 'react-native-gesture-handler';
+import {BottomSheetModalProvider} from '@gorhom/bottom-sheet';
+import TestBottomSheetScreen from './Screens/TestBottomSheetScreen';
 
 const Tab = createBottomTabNavigator();
 
 // NavigationContainer 외부에서는 useNavigationState를 사용할 수 없습니다
 const App = () => {
   return (
-    <SafeAreaProvider>
-      <NavigationContainer>
-        <TabNavigator />
-      </NavigationContainer>
-    </SafeAreaProvider>
+    <GestureHandlerRootView style={{flex: 1}}>
+      <SafeAreaProvider>
+        <BottomSheetModalProvider>
+          <NavigationContainer>
+            <TabNavigator />
+          </NavigationContainer>
+        </BottomSheetModalProvider>
+      </SafeAreaProvider>
+    </GestureHandlerRootView>
   );
 };
 
@@ -95,10 +102,11 @@ const TabNavigator = () => {
           headerTitleAlign: 'center',
           tabBarIcon: ({focused}) => {
             return (
-              <Ionicons
-                name="settings"
-                color={focused ? '#4973A4' : 'a0a0a0'}
+              <FontAwesome5
+                name="user-cog"
+                iconStyle="solid"
                 size={16}
+                color={focused ? '#4973A4' : 'a0a0a0'}
               />
             );
           },

@@ -1,18 +1,40 @@
-import React, {useEffect, useState} from 'react';
-import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
+import {View, Text, StyleSheet, TouchableOpacity, Button} from 'react-native';
 import FontAwesome5 from '@react-native-vector-icons/fontawesome5';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {getData, storeData} from '../Component/AsyncStorageItem';
+import BottomSheet, {
+  BottomSheetModal,
+  BottomSheetView,
+} from '@gorhom/bottom-sheet';
+import {GestureHandlerRootView} from 'react-native-gesture-handler';
 
-const BibleVerseComponent = () => {
+const SettingMainScreen = () => {
   const [colorModeOpen, setColorModeOpen] = useState(false);
   const [selectedMode, setSelectedColorThemeMode] = useState('');
+  const bottomSheetRef = useRef<BottomSheetModal>(null);
+
+  const snapPoints = useMemo(() => ['100%'], []);
+
+  // Bottom Sheet 열기 핸들러 - Fixed to call with an index parameter
+  const openSheet = () => {
+    bottomSheetRef.current?.snapToIndex(0); // 0 = 25%, 1 = 50%, 2 = 90%
+  };
+
+  // Bottom Sheet 닫기 핸들러
+  const handleClosePress = useCallback(() => {
+    bottomSheetRef.current?.close();
+  }, []);
+
+  const handleSheetChanges = useCallback((index: number) => {
+    console.log('handleSheetChanges', index);
+  }, []);
 
   const toggleColorMode = () => {
     setColorModeOpen(!colorModeOpen);
   };
 
-  const handleSelectMode = (mode: string) => {
+  const handleSelectMode = mode => {
     setSelectedColorThemeMode(mode);
     setColorModeOpen(false);
   };
@@ -41,21 +63,9 @@ const BibleVerseComponent = () => {
     }
   }, [selectedMode]);
 
-  // 로드할 때
-  useEffect(() => {
-    const loadColorTheme = async () => {
-      const theme = await getData('colorTheme');
-      console.log('불러온 테마:', theme);
-      if (theme) {
-        setSelectedColorThemeMode(theme);
-      }
-    };
-    loadColorTheme();
-  }, []);
-
   return (
-    <View style={styles.container}>
-      <TouchableOpacity style={styles.menuItem}>
+    <GestureHandlerRootView style={styles.container}>
+      <TouchableOpacity style={styles.menuItem} onPress={openSheet}>
         <Text style={styles.menuText}>글씨크기</Text>
         <FontAwesome5
           name="angle-right"
@@ -114,7 +124,18 @@ const BibleVerseComponent = () => {
           </View>
         )}
       </View>
-    </View>
+      <BottomSheet
+        ref={bottomSheetRef}
+        index={-1} // 초기에는 닫혀 있음
+        snapPoints={snapPoints}
+        onChange={handleSheetChanges}
+        style={{zIndex: 9999}}>
+        <BottomSheetView style={styles.bottomSheetContent}>
+          <Text style={styles.bottomSheetTitle}>바텀 시트입니다 🎉</Text>
+          <Button title="닫기" onPress={handleClosePress} />
+        </BottomSheetView>
+      </BottomSheet>
+    </GestureHandlerRootView>
   );
 };
 
@@ -178,6 +199,47 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: '#333',
   },
+  // New styles for BottomSheet content
+  bottomSheetContent: {
+    flex: 1,
+    padding: 20,
+    alignItems: 'center',
+    backgroundColor: 'white',
+  },
+  bottomSheetTitle: {
+    fontFamily: 'BMJUA_otf',
+    fontSize: 24,
+    marginBottom: 30,
+    color: '#000',
+  },
+  fontSizeOptions: {
+    width: '100%',
+    marginBottom: 30,
+  },
+  fontSizeOption: {
+    paddingVertical: 15,
+    paddingHorizontal: 20,
+    borderBottomWidth: 1,
+    borderBottomColor: '#EDEDEE',
+    alignItems: 'center',
+  },
+  fontSizeText: {
+    fontFamily: 'BMJUA_otf',
+    fontSize: 20,
+    color: '#333',
+  },
+  closeButton: {
+    backgroundColor: '#007AFF',
+    paddingVertical: 12,
+    paddingHorizontal: 30,
+    borderRadius: 8,
+    marginTop: 20,
+  },
+  closeButtonText: {
+    fontFamily: 'BMJUA_otf',
+    fontSize: 18,
+    color: 'white',
+  },
 });
 
-export default BibleVerseComponent;
+export default SettingMainScreen;
